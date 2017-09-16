@@ -1,3 +1,9 @@
+/*
+
+Copyright Eldad Zack 2017
+License: MIT
+
+ */
 use std::env;
 use std::fs::File;
 use std::io::Read;
@@ -5,6 +11,9 @@ use std::mem;
 use std::error::Error;
 
 use std::slice;
+
+#[cfg(test)]
+mod tests;
 
 mod gpt;
 use gpt::*;
