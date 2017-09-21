@@ -22,6 +22,8 @@ use std::mem;
 use gpt::*;
 use util;
 
+use test::Bencher;
+
 #[test]
 fn gpt_struct_sizes() {
     assert_eq!(mem::size_of::<ProtectiveMBR>(), 512);
@@ -50,4 +52,28 @@ fn boot_code_repr() {
 fn crc32_zlib() {
     let check_input: &[u8] = b"123456789";
     assert_eq!(util::crc32(check_input), 0xCBF43926);
+}
+
+#[bench]
+fn bench_is_empty(b: &mut Bencher) {
+    let part = GptPart::default();
+    b.iter(|| part.is_empty());
+}
+
+#[bench]
+fn bench_is_empty_u8(b: &mut Bencher) {
+    let part = GptPart::default();
+    b.iter(|| part.is_empty_u8());
+}
+
+#[bench]
+fn bench_is_empty_u32(b: &mut Bencher) {
+    let part = GptPart::default();
+    b.iter(|| part.is_empty_u8());
+}
+
+#[bench]
+fn bench_is_empty_jmp(b: &mut Bencher) {
+    let part = GptPart::default();
+    b.iter(|| part.is_empty_u8_jmp());
 }
