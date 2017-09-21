@@ -9,7 +9,7 @@ use std::io::Read;
 /*
  * CRC32/zlib style
  * Everything's inverted: start with 0xffffffff in the register, and flip all bits at the end.
- * Use 0xEDB88320 as polynomial (bit inverted 0x04C11DB7).
+ * Use 0xEDB88320 as polynomial (bit mirrored 0x04C11DB7).
  * When reading each byte, we first xor it with the register, and then do the xor division business for each bit,
  * and then xor it into the register (this should be a lookup table... meh).
  * NOW everything makes sense, doesn't it.
@@ -36,26 +36,11 @@ pub fn crc32(buf: &[u8]) -> u32 {
 pub fn guid_to_string(guid: &[u8; 16]) -> String {
     format!(
         "{:02x}{:02x}{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}",
-        guid[3],
-        guid[2],
-        guid[1],
-        guid[0],
-        // -
-        guid[5],
-        guid[4],
-        // -
-        guid[7],
-        guid[6],
-        // -
-        guid[8],
-        guid[9],
-        // -
-        guid[10],
-        guid[11],
-        guid[12],
-        guid[13],
-        guid[14],
-        guid[15],
+        guid[3], guid[2], guid[1], guid[0], // -
+        guid[5], guid[4], // -
+        guid[7], guid[6], // -
+        guid[8], guid[9], // -
+        guid[10], guid[11], guid[12], guid[13], guid[14], guid[15],
     )
 }
 
