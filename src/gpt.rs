@@ -266,6 +266,30 @@ impl GptPart {
         self.unique_partition_guid.iter().fold(0, |acc, &x| acc | x) == 0
     }
 
+    pub fn is_empty_u32(&self) -> bool {
+        let s = unsafe {
+            let p = self as *const GptPart as *const u32;
+            slice::from_raw_parts(p, mem::size_of::<GptPart>() >> 2)
+        };
+        s.iter().fold(0, |acc, &x| acc | x) == 0
+    }
+
+    pub fn is_empty_u8(&self) -> bool {
+        let s = unsafe {
+            let p = self as *const GptPart as *const u8;
+            slice::from_raw_parts(p, mem::size_of::<GptPart>())
+        };
+        s.iter().fold(0, |acc, &x| acc | x) == 0
+    }
+
+    pub fn is_empty_u8_jmp(&self) -> bool {
+        let s = unsafe {
+            let p = self as *const GptPart as *const u8;
+            slice::from_raw_parts(p, mem::size_of::<GptPart>())
+        };
+        s.iter().any(|&x| x != 0)
+    }
+
     pub fn bytesvec(&self) -> Vec<u8> {
         Vec::from(
             unsafe {
