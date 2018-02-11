@@ -266,6 +266,7 @@ impl GptPart {
         self.unique_partition_guid.iter().fold(0, |acc, &x| acc | x) == 0
     }
 
+    #[allow(dead_code)]
     pub fn is_empty_u32(&self) -> bool {
         let s = unsafe {
             let p = self as *const GptPart as *const u32;
@@ -274,6 +275,7 @@ impl GptPart {
         s.iter().fold(0, |acc, &x| acc | x) == 0
     }
 
+    #[allow(dead_code)]
     pub fn is_empty_u8(&self) -> bool {
         let s = unsafe {
             let p = self as *const GptPart as *const u8;
@@ -282,6 +284,7 @@ impl GptPart {
         s.iter().fold(0, |acc, &x| acc | x) == 0
     }
 
+    #[allow(dead_code)]
     pub fn is_empty_u8_jmp(&self) -> bool {
         let s = unsafe {
             let p = self as *const GptPart as *const u8;

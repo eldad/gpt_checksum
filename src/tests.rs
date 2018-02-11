@@ -22,8 +22,6 @@ use std::mem;
 use gpt::*;
 use util;
 
-use test::Bencher;
-
 #[test]
 fn gpt_struct_sizes() {
     assert_eq!(mem::size_of::<ProtectiveMBR>(), 512);
@@ -54,6 +52,9 @@ fn crc32_zlib() {
     assert_eq!(util::crc32(check_input), 0xCBF43926);
 }
 
+/*
+use test::Bencher;
+
 #[bench]
 fn bench_is_empty(b: &mut Bencher) {
     let part = GptPart::default();
@@ -77,3 +78,4 @@ fn bench_is_empty_jmp(b: &mut Bencher) {
     let part = GptPart::default();
     b.iter(|| part.is_empty_u8_jmp());
 }
+*/

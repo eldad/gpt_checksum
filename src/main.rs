@@ -19,9 +19,6 @@
  * Assumes block size of 512 (compare with output of `lsblk -o name,phy-sec`)
  *
  */
-#![feature(test)]
-
-extern crate test;
 
 use std::env;
 use std::fs::File;
