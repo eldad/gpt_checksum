@@ -25,7 +25,7 @@ use std::mem;
 
 use std::slice;
 
-use util;
+use crate::util;
 
 pub struct Gpt {
     pub pmbr: ProtectiveMBR,

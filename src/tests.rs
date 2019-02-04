@@ -19,8 +19,8 @@
  */
 
 use std::mem;
-use gpt::*;
-use util;
+use crate::gpt::*;
+use crate::util;
 
 #[test]
 fn gpt_struct_sizes() {
