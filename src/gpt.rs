@@ -98,7 +98,7 @@ impl ProtectiveMBR {
     pub fn signature_repr(&self) -> String {
         format!("{} [0x{:04X}]",
             if self.valid_signature() { "Valid" } else { "Invalid" },
-            self.signature,
+            { self.signature },
         )
     }
 
@@ -116,7 +116,7 @@ impl ProtectiveMBR {
 
 const GPT_HEADER_SIGNATURE: &[u8] = b"EFI PART";
 
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 #[repr(C, packed)]
 pub struct GptHeader {
     signature: [u8; 8],
@@ -156,8 +156,8 @@ impl fmt::Debug for GptHeader {
             self.revision_repr(),
             util::guid_to_string(&self.disk_guid),
             self.header_crc32_repr(),
-            self.partition_entries,
-            self.partition_entry_size,
+            { self.partition_entries },
+            { self.partition_entry_size },
         )
     }
 }
@@ -169,22 +169,22 @@ impl GptHeader {
 
     pub fn revision_repr(&self) -> String {
         format!("{:?}.{:?}",
-            self.revision_major,
-            self.revision_minor,
+            { self.revision_major },
+            { self.revision_minor },
         )
     }
 
     pub fn header_size_repr(&self) -> String {
         format!("{} ({})",
             if self.header_size as usize == (mem::size_of::<GptHeader>()) { "Correct" } else { "Incorrect" },
-            self.header_size,
+            { self.header_size },
         )
     }
 
     pub fn header_crc32_repr(&self) -> String {
         let computed_crc = self.crc32();
         format!("{:08X} ({})",
-            self.header_crc32,
+            { self.header_crc32 },
             if self.header_crc32 == computed_crc {
                 String::from("Valid")
             } else {
@@ -218,7 +218,7 @@ pub fn gpt_part_table_crc32(parts: &[GptPart]) -> u32 {
     util::crc32(&buf)
 }
 
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 #[repr(C, packed)]
 pub struct GptPart {
     partition_type_guid: [u8; 16],
