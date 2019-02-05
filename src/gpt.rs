@@ -249,14 +249,14 @@ impl fmt::Debug for GptPart {
 impl GptPart {
     pub fn part_type_repr(&self) -> String {
         let guid = util::guid_to_string(&self.partition_type_guid);
-         /* There are more types, but these I use. */
-        let desc = {
-                 if guid == "0fc63daf-8483-4772-8e79-3d69d8477de4" { "Linux Filesystem Data" }
-            else if guid == "c12a7328-f81f-11d2-ba4b-00a0c93ec93b" { "EFI System Partition" }
-            else if guid == "e3c9e316-0b5c-4db8-817d-f92df00215ae" { "Microsoft Reserved Partition (MSR)" }
-            else if guid == "ebd0a0a2-b9e5-4433-87c0-68b6b72699c7" { "Microsoft Windows Basic Data Partition" }
-            else if guid == "de94bba4-06d1-4d40-a16a-bfd50179d6ac" { "Microsoft Windows Recovery Environment" }
-            else                                                   { "Unknown" }
+         /* There are more types, but I use only these for noow. */
+        let desc = match &guid as &str {
+            "0fc63daf-8483-4772-8e79-3d69d8477de4" => "Linux Filesystem Data",
+            "c12a7328-f81f-11d2-ba4b-00a0c93ec93b" => "EFI System Partition",
+            "ebd0a0a2-b9e5-4433-87c0-68b6b72699c7" => "Microsoft Windows Basic Data Partition",
+            "de94bba4-06d1-4d40-a16a-bfd50179d6ac" => "Microsoft Windows Recovery Environment",
+            "e3c9e316-0b5c-4db8-817d-f92df00215ae" => "Microsoft Reserved Partition (MSR)",
+            _ => "Unknown",
         };
         format!("{:40} <{}>", desc, guid)
     }
