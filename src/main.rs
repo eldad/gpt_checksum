@@ -34,7 +34,7 @@ use std::slice;
 mod util;
 
 mod gpt;
-use gpt::*;
+use crate::gpt::*;
 
 #[cfg(test)]
 mod tests;
