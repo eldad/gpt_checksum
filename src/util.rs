@@ -64,7 +64,7 @@ pub fn guid_to_string(guid: &[u8; 16]) -> String {
  * Pros: no crate required. Awesome randomness. No ugly seed business.
  * Cons: not portable. Oh, well.
  */
-pub fn urandom_uuid() -> Result<[u8; 16], Box<Error>> {
+pub fn urandom_uuid() -> Result<[u8; 16], Box<dyn Error>> {
     let mut f = File::open("/dev/urandom")?;
     let mut buf: [u8; 16] = [0; 16];
     f.read_exact(&mut buf)?;

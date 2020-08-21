@@ -41,7 +41,7 @@ mod tests;
 
 const BLOCK_SIZE: usize = 512;
 
-fn unsafe_read_to_struct<T: Default, H: Read>(src: &mut H) -> Result<T, Box<Error>> {
+fn unsafe_read_to_struct<T: Default, H: Read>(src: &mut H) -> Result<T, Box<dyn Error>> {
     let mut ret = T::default();
     let s: &mut [u8] = unsafe {
         let p = (&mut ret) as *mut T as *mut u8;
@@ -51,7 +51,7 @@ fn unsafe_read_to_struct<T: Default, H: Read>(src: &mut H) -> Result<T, Box<Erro
     Ok(ret)
 }
 
-fn unsafe_write_struct<T, H: Write>(dst: &mut H, data: &T) -> Result<(), Box<Error>> {
+fn unsafe_write_struct<T, H: Write>(dst: &mut H, data: &T) -> Result<(), Box<dyn Error>> {
     let len = mem::size_of::<T>();
     let bytes = unsafe {
         let p = data as *const T as *const u8;
@@ -64,7 +64,7 @@ fn unsafe_write_struct<T, H: Write>(dst: &mut H, data: &T) -> Result<(), Box<Err
     Ok(())
 }
 
-fn seek_next_block_after<T: Sized, H: Seek>(handle: &mut H, block_size: usize) -> Result<(), Box<Error>>
+fn seek_next_block_after<T: Sized, H: Seek>(handle: &mut H, block_size: usize) -> Result<(), Box<dyn Error>>
 {
     let len = mem::size_of::<T>();
     if len != block_size {
@@ -74,7 +74,7 @@ fn seek_next_block_after<T: Sized, H: Seek>(handle: &mut H, block_size: usize) -
     Ok(())
 }
 
-fn read_gpt(filename: &str) -> Result<Gpt, Box<Error>>
+fn read_gpt(filename: &str) -> Result<Gpt, Box<dyn Error>>
 {
     println!("* Opening '{}'", filename);
     let mut f: File = File::open(filename)?;
@@ -127,7 +127,7 @@ fn print_gpt_info(gpt: &Gpt) {
     }
 }
 
-fn write_gpt(mut gpt: Gpt, filename: &str) -> Result<(), Box<Error>> {
+fn write_gpt(mut gpt: Gpt, filename: &str) -> Result<(), Box<dyn Error>> {
     println!("*\n* Opening for WRITE: '{}'\n*", filename);
     let mut f: File = File::create(filename)?;
 
@@ -156,7 +156,7 @@ fn write_gpt(mut gpt: Gpt, filename: &str) -> Result<(), Box<Error>> {
     Ok(())
 }
 
-fn _main() -> Result<(), Box<Error>> {
+fn _main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 && args.len() != 3 {
         panic!("Expected one or two parameters: [input] ([output]).");
