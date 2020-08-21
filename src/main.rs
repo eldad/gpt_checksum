@@ -82,20 +82,20 @@ fn read_gpt(filename: &str) -> Result<Gpt, Box<Error>>
     let pmbr: ProtectiveMBR = unsafe_read_to_struct(&mut f)?;
     seek_next_block_after::<ProtectiveMBR, File>(&mut f, BLOCK_SIZE)?;
 
-    let gpt_header: GptHeader = unsafe_read_to_struct(&mut f)?;
+    let header: GptHeader = unsafe_read_to_struct(&mut f)?;
     seek_next_block_after::<GptHeader, File>(&mut f, BLOCK_SIZE)?;
 
-    let mut gpt_parts: Vec<GptPart> = Vec::new();
-    for _ in 0..gpt_header.partition_entries {
+    let mut parts: Vec<GptPart> = Vec::new();
+    for _ in 0..header.partition_entries {
         let gpt_part: GptPart = unsafe_read_to_struct(&mut f)?;
-        gpt_parts.push(gpt_part);
-        seek_next_block_after::<GptPart, File>(&mut f, gpt_header.partition_entry_size as usize)?;
+        parts.push(gpt_part);
+        seek_next_block_after::<GptPart, File>(&mut f, header.partition_entry_size as usize)?;
     }
 
     Ok(Gpt {
-        pmbr: pmbr,
-        header: gpt_header,
-        parts: gpt_parts,
+        pmbr,
+        header,
+        parts,
     })
 }
 
