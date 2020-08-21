@@ -195,7 +195,7 @@ impl GptHeader {
 
     pub fn crc32(&self) -> u32 {
         /* Get a u8-array after zeroing the CRC32 field */
-        let mut temp = self.clone();
+        let mut temp = *self;
         let s = unsafe {
             temp.header_crc32 = 0;
             let p = (&mut temp) as *mut GptHeader as *mut u8;
@@ -264,33 +264,6 @@ impl GptPart {
     pub fn is_empty(&self) -> bool {
         self.partition_type_guid.iter().fold(0, |acc, &x| acc | x) == 0 &&
         self.unique_partition_guid.iter().fold(0, |acc, &x| acc | x) == 0
-    }
-
-    #[allow(dead_code)]
-    pub fn is_empty_u32(&self) -> bool {
-        let s = unsafe {
-            let p = self as *const GptPart as *const u32;
-            slice::from_raw_parts(p, mem::size_of::<GptPart>() >> 2)
-        };
-        s.iter().fold(0, |acc, &x| acc | x) == 0
-    }
-
-    #[allow(dead_code)]
-    pub fn is_empty_u8(&self) -> bool {
-        let s = unsafe {
-            let p = self as *const GptPart as *const u8;
-            slice::from_raw_parts(p, mem::size_of::<GptPart>())
-        };
-        s.iter().fold(0, |acc, &x| acc | x) == 0
-    }
-
-    #[allow(dead_code)]
-    pub fn is_empty_u8_jmp(&self) -> bool {
-        let s = unsafe {
-            let p = self as *const GptPart as *const u8;
-            slice::from_raw_parts(p, mem::size_of::<GptPart>())
-        };
-        s.iter().any(|&x| x != 0)
     }
 
     pub fn bytesvec(&self) -> Vec<u8> {
