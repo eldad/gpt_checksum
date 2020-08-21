@@ -195,7 +195,7 @@ impl GptHeader {
 
     pub fn crc32(&self) -> u32 {
         /* Get a u8-array after zeroing the CRC32 field */
-        let mut temp = self.clone();
+        let mut temp = *self;
         let s = unsafe {
             temp.header_crc32 = 0;
             let p = (&mut temp) as *mut GptHeader as *mut u8;
