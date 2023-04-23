@@ -4,3 +4,5 @@
 
 A tool to regenerate UUID of a GPT and recalculate its checksum.
 Useful when cloning an entire disk.
+
+100% rust code without any dependencies.
